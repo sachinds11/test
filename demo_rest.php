@@ -30,6 +30,33 @@ function show_accounts($instance_url, $access_token) {
     echo "<br/>";
 }
 
+function update_account($id, $new_name, $city, $instance_url, $access_token) {
+    $url = "$instance_url/services/data/v20.0/sobjects/Account/$id";
+
+    $content = json_encode(array("Name" => $new_name, "BillingCity" => $city));
+
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    curl_setopt($curl, CURLOPT_HTTPHEADER,
+            array("Authorization: OAuth $access_token",
+                "Content-type: application/json"));
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+
+    curl_exec($curl);
+
+    $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    if ( $status != 204 ) {
+        die("Error: call to URL $url failed with status $status, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+    }
+
+    echo "HTTP status $status updating account<br/><br/>";
+
+    curl_close($curl);
+}
+$id="0012800000ls23d";
+ update_account($id, "Burlington Textiles Corp of America ss", "San Francisco",$instance_url, $access_token);
 
 show_accounts($instance_url, $access_token);
 
