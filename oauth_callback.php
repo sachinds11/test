@@ -48,7 +48,7 @@ if (!isset($instance_url) || $instance_url == "") {
 
 $_SESSION['access_token'] = $access_token;
 $_SESSION['instance_url'] = $instance_url;
-echo $_SESSION['access_token'];exit;
+//echo $_SESSION['access_token'];exit;
 
 header( 'Location: demo_rest.php' ) ;
 ?>
